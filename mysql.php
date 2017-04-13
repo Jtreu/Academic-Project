@@ -1,59 +1,16 @@
 <html>
-<head><style>
-  #bodyheader {
-    background-color: #1abc9c;
-    padding: 6px;
-    margin:0px;
-    margin-bottom: 10px;
-  }
+<head>
+  <link rel="stylesheet" href="academicproject.css" </link>
+  <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 
-  h1 {
-    color: white;
-    margin: 3px;
-  }
-
-  tr,
-  td {
-    border: 1px solid #D6DBE8;
-  }
-  table {
-
-  border-collapse: collapse;
-  }
-
-  table,
-  tr,
-  td,
-  th {
-    padding: 7px;
-  }
-
-  tr:nth-child(even) {
-    background: #3498db;
-  }
-
-  tr:nth-child(odd) {
-    background: #2980b9;
-  }
-
-  th {
-    background: #34495e;
-    text-align: center;
-  }
-
-  body {
-    background-color: #21252B;
-    color: white;
-    font-family: 'Inconsolata', monospace;
-    margin: 0px;
-  }
-</style></head>
+</head>
 <body>
+  <!--Select statement from database includes all columns for specified username -->
   <?php
 $selectedStudent = $_POST['studentselect'];
 $selectedStudent = preg_split("/[\s,]+/", $selectedStudent);
 echo "<h1>$selectedStudent[0] $selectedStudent[1]</h1>";
-
+echo "<button id=\"back\" onclick=\"location.href = 'academicproject.php';\" style='display: block'>Select Different Student</button>";
 // Connecting, selecting database
 $server = "localhost";
 $db = "sakila";
@@ -86,6 +43,12 @@ mysqli_free_result($result);
 // Closing connection
 mysqli_close($dbconn);
 ?>
+<!--Need to add database insert functionality here-->
+	<div id="addScore" style="display: block">
+    <form method="post" style = "display: inline">
+		<input type="text" id="scoreInput"></input>
+		<button onclick="addScore()">Add score</button>
+	</div>
 
 </body>
 </html>
