@@ -6,7 +6,7 @@
           duh dude.*/
 
 /* The USE db_name statement tells MySQL to use the db_name database as the default (current) database for subsequent statements */
-USE academicdb
+USE academicdb;
 
 /* teacher.id should auto increment */
 INSERT INTO teachers(first_name, last_name)
@@ -16,21 +16,21 @@ VALUES ('Test', 'Teacher');
 /* student.id should auto increment */
 INSERT INTO students(first_name, last_name, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
 SELECT DISTINCT
-  'Test', 'Child1', 25, 50, 100, id,
-FROM teachers WHERE teacher.first_name = 'Test' AND
-                    teacher.last_name  = 'Teacher';
+  'Test', 'Child1', 25, 50, 100, id
+FROM teachers WHERE teachers.first_name = 'Test' AND
+                    teachers.last_name  = 'Teacher';
 
 INSERT INTO students(first_name, last_name, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
 SELECT DISTINCT
-  'Test', 'Child2', 25, 50, 100, id,
-FROM teachers WHERE teacher.first_name = 'Test' AND
-                    teacher.last_name  = 'Teacher';
+  'Test', 'Child2', 25, 50, 100, id
+FROM teachers WHERE teachers.first_name = 'Test' AND
+                    teachers.last_name  = 'Teacher';
 
 INSERT INTO students(first_name, last_name, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
 SELECT DISTINCT
-  'Test', 'Child3', 25, 50, 100, id,
-FROM teachers WHERE teacher.first_name = 'Test' AND
-                    teacher.last_name  = 'Teacher';
+  'Test', 'Child3', 25, 50, 100, id
+FROM teachers WHERE teachers.first_name = 'Test' AND
+                    teachers.last_name  = 'Teacher';
 
 /* books.id should auto increment */
 INSERT INTO books(name, reading_lvl)
@@ -97,10 +97,10 @@ INSERT INTO assessments(s_id, assessment_name, assessment_grade)
 SELECT DISTINCT s.id, 'Homework1', 75
 FROM students s
 WHERE s.first_name = 'Test' AND
-      s.last_name = 'Child1';
+      s.last_name = 'Child2';
 
 INSERT INTO assessments(s_id, assessment_name, assessment_grade)
 SELECT DISTINCT s.id, 'Homework1', 100
 FROM students s
 WHERE s.first_name = 'Test' AND
-      s.last_name = 'Child1';
+      s.last_name = 'Child3';
