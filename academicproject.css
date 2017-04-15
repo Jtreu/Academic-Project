@@ -2,97 +2,94 @@ body {
     font-family: 'Quicksand', sans-serif;
     color: white;
     margin: 0px;
-    background-color: #21252B;
+    background-color: #2F333E;
+}
 
-}
 div {
-  background-color: #323A45;
-  padding: 20px;
-  margin: 0px;
+  background-color: #272B34;
+    padding: 20px;
+    margin: 0px;
 }
+
 h1 {
-  color: white;
-  margin: 3px;
+    color: white;
+    margin: 3px;
 }
+
 h3 {
-  margin:0px;
-  padding:6px;
-  /*background-color: #3598DC;*/
-  color: #ECF0F1;
+    margin: 0px;
+    padding: 6px;
+    /*background-color: #3598DC;*/
+    color: #ECF0F1;
+}
+p {
+  margin-left: 20px;
 }
 
 input, select, button {
-  font-size: 24px;
-  font-family: 'Quicksand', sans-serif;
-  border-radius:10px;
-  -webkit-border-radius:10px;
-  height: auto;
-  width: auto;
-  text-shadow: none;
-  box-shadow: none;
-  border: none;
-  padding: 10px;
-  margin: 4px;
-}
-
-select > option {
-text-transform: uppercase;
-padding: 5px 3px;
-}
-#addBook {
-  background-color: #95a5a6;
-
-}
-#addAssessment {
-  background-color: #7f8c8d;
-}
-#studentbooks {
-  background-color: #2c3e50;
-
-}
-  #bodyheader {
-    background-color: #1abc9c;
-  }
-  #back
-  {
-    font-size: 16px;
+    font-size: 24px;
     font-family: 'Quicksand', sans-serif;
-    border-radius:2px;
-    -webkit-border-radius:2px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
     height: auto;
     width: auto;
     text-shadow: none;
     box-shadow: none;
     border: none;
     padding: 10px;
+    margin: 4px;
+}
+
+select>option {
+    text-transform: uppercase;
+    padding: 5px 3px;
+
+}
+
+
+#bodyheader {
+  background-color: #21242B;
+  border-bottom:1px solid #6C92DC;
+
+}
+
+#back {
+    font-size: 16px;
+    font-family: 'Quicksand', sans-serif;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    height: auto;
+    width: auto;
+    text-shadow: none;
+    box-shadow: none;
+    border: #6C92DC;
+    padding: 10px;
     margin: 10px;
+}
 
-  }
-  tr,td {
-    border: 1px solid #D6DBE8;
-  }
-  table {
-  border-collapse: collapse;
-  }
+tr, td {
+    border: 1px solid #6C92DC;
+}
 
-  table,
-  tr,
-  td,
-  th {
+table {
+    border-collapse: collapse;
+}
+
+table, tr, td, th {
     padding: 7px;
     margin: 10px;
-    margin-left:50px;
-  }
+    margin-bottom: 30px;
+}
 
-  tr:nth-child(even) {
-    background: #3498db;
-  }
+tr:nth-child(even) {
+    background: #272B34;
+}
 
-  tr:nth-child(odd) {
-    background: #2980b9;
-  }
+tr:nth-child(odd) {
+    background: #2F333E;
+}
 
-  th {
-    background: #34495e;
+th {
+    background: #21242B;
     text-align: center;
-  }
+}

@@ -8,10 +8,11 @@
 </head>
 <body>
 	<div id="bodyheader">
-		<h1>Reading Progress Database</h1>
+		<h1>Academic Progress Database</h1>
 	</div>
+	<!--
 	<div id="studentSelect">
-		<h3>Select a student to add a book</h3>
+		<h3>View and Edit Student Data</h3>
 		<form action="mysql.php" method="post" style = "display: inline">
 			<select name="studentselect">
 				<?php
@@ -27,7 +28,28 @@
 				}
 				?>
 			</select>
-		<input type="submit" name = "submit" id = "bigbutton">
+		<input type="submit" name = "ssubmit" id = "bigbutton">
+	</form>
+</div>
+-->
+	<div>
+		<h3>Select User</h3>
+		<form action="mysql2.php" method="post" style = "display: inline">
+			<select name="teacherselect">
+				<?php
+				$server = "localhost";
+				$db = "academicdb";
+				$user = "root";
+				$password = "";
+				$dbconn = mysqli_connect($server, $user, $password, $db)
+	    		or die('Could not connect: '.mysqli_connect_error());
+					$sql = mysqli_query($dbconn, "SELECT first_name, last_name FROM teachers");
+				while ($row = $sql->fetch_assoc()){
+					echo "<option value=\"" . $row['first_name']. " " . $row['last_name']."\">" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+				}
+				?>
+			</select>
+		<input type="submit" name = "tsubmit" id = "bigbutton">
 	</form>
 </div>
 </body>

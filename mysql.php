@@ -4,13 +4,12 @@
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
 <body>
-  <div id = "studentbooks">
-  <!--Select statement from database includes all columns for specified username -->
+  <div id = "bodyheader">
   <?php
 $selectedStudent = $_POST['studentselect'];
 $selectedStudent = preg_split("/[\s,]+/", $selectedStudent);
 echo "<h1>$selectedStudent[0] $selectedStudent[1]</h1>";
-echo "<button id=\"back\" onclick=\"location.href = 'academicproject.php';\" style='display: inline'>Select Different Student</button>";
+echo "<button id=\"back\" onclick=\"location.href = 'academicproject.php';\" style='display: inline'>Database Home</button>";
 echo "</div>";
 // Connecting, selecting database
 $server = "localhost";
@@ -20,43 +19,95 @@ $password = "";
 $dbconn = mysqli_connect($server, $user, $password, $db)
     or die('Could not connect: '.mysqli_connect_error());
 // Performing SQL query
-$query = "SELECT * FROM students WHERE first_name = '$selectedStudent[0]' AND last_name = '$selectedStudent[1]'";
+//display Teacher, current reading level, target reading level, starting rl, books read, book reading level
+$query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn, students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl,students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid FROM teachers, students, books, books_read WHERE students.first_name = '$selectedStudent[0]' AND students.last_name = '$selectedStudent[1]' AND teachers.id = students.teacher_id AND books_read.s_id = students.id AND books.id = books_read.b_id";
+
 $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
-?>
-
-<!--Need to add database insert functionality here-->
-	<div id="addBook" style="display: block">
-    <form method="post" style = "display: inline">
-		<input type="text" placeholder = "book name" id="bookInput" size = "30"></input>
-    <input type="text" placeholder = "level" id="reading_lvlInput" size = "5"></input>
-		<button onclick="" >Submit</button> <!--replace with submit button, post method-->
-	</div>
-
-  <div id="addAssessment" style="display: block">
-    <form method="post" style = "display: inline">
-		<input type="text" placeholder = "assessment name" id="assessment_name" size = "30"></input>
-    <input type="text" placeholder = "grade" id="assessment_grade" size = "5"></input>
-		<button onclick="" >Submit</button><!--replace with submit button, post method-->
-	</div>
-  <?php
   // Printing results in HTML
-  echo "<table>\n";
+  $column = array();
 
-  while ($line = $result->fetch_assoc()) {
+  while ($row = mysqli_fetch_assoc($result)) {
+      $studentFirstName = $row['sfn'];
+      $studentLastName = $row['sln'];
+      $teacherFirstName = $row['tfn'];
+      $studentID = $row['sid'];
+      $teacherLastName = $row['tln'];
+      $currentReadingLevel = $row['crl'];
+      $goalReadingLevel = $row['grl'];
+      $startingReadingLevel = $row['srl'];
+      $bookName[] = $row['bkn'];
+      $bookReadingLevel[] = $row['bkrl'];
+      $bookID = $row['bid'];
+}
 
-      echo "\t<tr>\n";
-      foreach ($line as $col_value) {
-          echo "\t\t<td>$col_value</td>\n";
+
+echo "<div style = 'float:left; width: 400px; height: 100%;'><table><th colspan = '2'>Student Info</th><tr><td>Teacher</td><td>$teacherFirstName $teacherLastName</td></tr><tr><td>Starting Reading Level</td><td>$startingReadingLevel</td></tr><tr><td>GoalReading Level</td><td>$goalReadingLevel</td></tr><tr><td>Current Reading Level</td><td>$currentReadingLevel</td></tr></table>";
+
+echo "<table>\n";
+echo "<tr><th colspan = '2'>Books Read</th></tr>";
+echo "\t<tr>\n";
+    echo "\t\t<td>Book Name</td>\n";
+    echo "\t\t<td>Reading Level</td>\n";
+    echo "\t</tr>\n";
+    echo "\t<tr>\n";
+    foreach (array_combine($bookName, $bookReadingLevel) as $bookName => $bookReadingLevel) {
+       echo "\t\t<td>$bookName</td>\n";
+       echo "\t\t<td>$bookReadingLevel</td>\n";
+       echo "\t</tr>\n";
       }
-      echo "\t</tr>\n";
-  }
-  echo "</table>\n";
-
+echo "</table>\n";
   // Free resultset
   mysqli_free_result($result);
-
   // Closing connection
   mysqli_close($dbconn);
   ?>
+<p>Add book</p>
+
+  <form action="book.php" method="post" style = "display: inline">
+  <input type = "hidden" name = "sid" value = "<?php echo $studentID;?>">
+    <input type = "hidden" name = "bid" value = "<?php echo $bookID;?>">
+    <select name="bookselect">
+      <?php
+      $server = "localhost";
+      $db = "academicdb";
+      $user = "root";
+      $password = "";
+      $dbconn = mysqli_connect($server, $user, $password, $db)
+        or die('Could not connect: '.mysqli_connect_error());
+        $sql = mysqli_query($dbconn, "SELECT books.name AS bkn, students.id AS sid FROM books, students WHERE students.first_name = '$studentFirstName' AND students.last_name = '$studentLastName'");
+      while ($row = $sql->fetch_assoc()){
+          echo "<option value=\"" . $row['bkn']. " \">" . $row['bkn']. " </option>";
+        }
+?>
+    </select>
+  <input type="submit"name = "tsubmit" id = "bigbutton">
+</form>
+  </div>
+  <div id = "rightdiv" style = "float: left; width: 400px; height: 100%;">
+    <form method="post" style = "display: inline">
+    <input type="text" placeholder = "assessment name" id="assessment_name" size = "30"></input>
+    <input type="text" placeholder = "grade" id="assessment_grade" size = "5"></input>
+    <button onclick="" >Submit</button><!--replace with submit button, post method-->
+    </form>
+  <?php
+
+  $query = "SELECT assessments.assessment_name AS an, assessments.assessment_grade AS ag FROM assessments WHERE assessments.s_id = '$studentID'";
+
+  $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
+    // Printing results in HTML
+    echo "<table><tr><th colspan = '2'>Assignments</td></tr><tr><td>Assessment Name</th><td>Grade</td></tr>";
+    while ($row = mysqli_fetch_assoc($result)) {
+      echo "<tr><td>";
+      echo $assessmentName = $row['an'];
+      echo "</td><td>";
+      echo $assessmentGrade = $row['ag'];
+      echo "</td></tr>";
+  }
+  echo "</table>";
+?>
+
+  </div>
+
+
 </body>
 </html>
