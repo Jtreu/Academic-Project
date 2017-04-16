@@ -1,5 +1,4 @@
-
-  body {
+body {
     font-family: 'Quicksand', sans-serif;
     color: white;
     margin: 0px;
@@ -7,7 +6,7 @@
 }
 
 div {
-  background-color: #272B34;
+    background-color: #272B34;
     padding: 20px;
     margin: 0px;
 }
@@ -20,11 +19,11 @@ h1 {
 h3 {
     margin: 0px;
     padding: 6px;
-    /*background-color: #3598DC;*/
     color: #ECF0F1;
 }
+
 p {
-  margin: 20px;
+    margin: 20px;
 }
 
 input, select, button {
@@ -44,14 +43,11 @@ input, select, button {
 select>option {
     text-transform: uppercase;
     padding: 5px 3px;
-
 }
 
-
 #bodyheader {
-  background-color: #21242B;
-  border-bottom:1px solid #6C92DC;
-
+    background-color: #21242B;
+    border-bottom: 1px solid #6C92DC;
 }
 
 #back {

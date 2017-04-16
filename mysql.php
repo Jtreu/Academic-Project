@@ -4,21 +4,33 @@
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
 <body>
-  <?php include("navigation.php"); ?>
   <div id = "bodyheader">
   <?php
-$selectedStudent = $_POST['studentselect'];
-$selectedStudent = preg_split("/[\s,]+/", $selectedStudent);
-echo "<h1>$selectedStudent[0] $selectedStudent[1]</h1>";
+$studentID = $_POST['studentselect'];
+$server = "localhost";
+$db = "academicdb";
+$user = "root";
+$password = "";
+$dbconn = mysqli_connect($server, $user, $password, $db)
+  or die('Could not connect: '.mysqli_connect_error());
+  $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS sfn, last_name AS sln FROM students WHERE students.id = $studentID");
+while ($row = $sql->fetch_assoc()){
+  $studentFirstName = $row['sfn'];
+  $studentLastName = $row['sln'];
+}
+echo "<h1>$studentFirstName $studentLastName</h1>";
 echo "<button id=\"back\" onclick=\"location.href = 'academicproject.php';\" style='display: inline'>Database Home</button>";
 echo "</div>";
-
-/* dbconn is referenced from this file */
-require_once('php/mysqli_connect.php');
-
+// Connecting, selecting database
+$server = "localhost";
+$db = "academicdb";
+$user = "root";
+$password = "";
+$dbconn = mysqli_connect($server, $user, $password, $db)
+    or die('Could not connect: '.mysqli_connect_error());
 // Performing SQL query
 //display Teacher, current reading level, target reading level, starting rl, books read, book reading level
-$query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn, students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl,students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid FROM teachers, students, books, books_read WHERE students.first_name = '$selectedStudent[0]' AND students.last_name = '$selectedStudent[1]' AND teachers.id = students.teacher_id AND books_read.s_id = students.id AND books.id = books_read.b_id";
+$query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn, students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl,students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid FROM teachers, students, books, books_read WHERE students.first_name = '$studentFirstName' AND students.last_name = '$studentLastName' AND teachers.id = students.teacher_id AND books_read.s_id = students.id AND books.id = books_read.b_id";
 
 $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
   // Printing results in HTML
@@ -66,9 +78,12 @@ echo "</table>\n";
     <input type = "hidden" name = "bid" value = "<?php echo $bookID;?>">
     <select name="bookselect">
       <?php
-      /* dbconn is referenced from this file */
-      require_once('php/mysqli_connect.php');
-
+      $server = "localhost";
+      $db = "academicdb";
+      $user = "root";
+      $password = "";
+      $dbconn = mysqli_connect($server, $user, $password, $db)
+        or die('Could not connect: '.mysqli_connect_error());
         $sql = mysqli_query($dbconn, "SELECT books.name AS bkn, students.id AS sid FROM books, students WHERE students.first_name = '$studentFirstName' AND students.last_name = '$studentLastName'");
       while ($row = $sql->fetch_assoc()){
           echo "<option value=\"" . $row['bkn']. " \">" . $row['bkn']. " </option>";
@@ -100,9 +115,6 @@ echo "</table>\n";
   }
   echo "</table>";
 ?>
-
   </div>
-
-
 </body>
 </html>
