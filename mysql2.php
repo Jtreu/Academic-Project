@@ -1,5 +1,11 @@
 <html>
 <head>
+  <script>
+  function newStudent() {
+  document.getElementById("selectstudent").style.display = "none";
+  document.getElementById("addnewstudent").style.display = "block";
+  }
+  </script>
   <link rel="stylesheet" href="academicproject.css" </link>
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
@@ -7,17 +13,18 @@
   <div id = "bodyheader">
   <!--Select statement from database includes all columns for specified username -->
   <?php
-    $selectedTeacher = $_POST['teacherselect'];
-
+$selectedTeacher = $_POST['teacherselect'];
 $selectedTeacher= preg_split("/[\s,]+/", $selectedTeacher);
 echo "<h1>$selectedTeacher[0] $selectedTeacher[1]</h1>";
 echo "<button id=\"back\" onclick=\"location.href = 'academicproject.php';\" style='display: inline'>Database Home</button>";
 echo "</div>";
-echo "<div id=\"teacherSelect\"\n>";
-  echo "<h3>Select Existing Student</h3>";
-echo "<form action=\"mysql.php\" method=\"post\" style = \"display: inline\">";
-echo "<select name=\"studentselect\">";
+?>
 
+<div id="selectstudent">
+<h3>Select Existing Student</h3>
+<form action="mysql.php" method="post" style = "display: inline">
+<select name="studentselect">
+<?php
 // Connecting, selecting database
 $server = "localhost";
 $db = "academicdb";
@@ -43,15 +50,18 @@ $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
 </select>
 <input type="submit" name = "ssubmit" id = "bigbutton"></input>
 </form>
+<p style = "display: inline">OR</p>
+<button onclick = "newStudent()" id = "studentselectbutton">Add New Student</button>
+</div>
 
-
-<h2>OR</h2>
-<h3>Add New Student Under <?php echo "$selectedTeacher[0] $selectedTeacher[1]";?></h3>
+<div id = "addnewstudent" style = "display: none">
+  <h3>Add New Student Under <?php echo "$selectedTeacher[0] $selectedTeacher[1]";?></h3>
 <form method="post" action ="student.php"style = "display: block">
   <input type = "hidden" name = "tid" value = "<?php echo $teacherID;?>">
 <input type="text" name ="sfn"placeholder = "first name" size = "12"></input>
 <input type="text" name ="sln"placeholder = "last name" size = "12"></input>
 <input type="submit" name = "nssubmit"></input><!--replace with submit button, post method-->
 </form>
+</div>
 </body>
 </html>

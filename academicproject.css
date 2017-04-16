@@ -1,4 +1,5 @@
-body {
+
+  body {
     font-family: 'Quicksand', sans-serif;
     color: white;
     margin: 0px;
@@ -23,7 +24,7 @@ h3 {
     color: #ECF0F1;
 }
 p {
-  margin-left: 20px;
+  margin: 20px;
 }
 
 input, select, button {

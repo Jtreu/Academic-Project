@@ -84,10 +84,10 @@ echo "</table>\n";
 </form>
   </div>
   <div id = "rightdiv" style = "float: left; width: 400px; height: 100%;">
-    <form method="post" style = "display: inline">
+    <form method="post" action = "assignments.php"style = "display: inline">
     <input type="text" placeholder = "assessment name" id="assessment_name" size = "30"></input>
     <input type="text" placeholder = "grade" id="assessment_grade" size = "5"></input>
-    <button onclick="" >Submit</button><!--replace with submit button, post method-->
+    <input type="Submit"></input>
     </form>
   <?php
 
