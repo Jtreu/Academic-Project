@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
 <body>
+  <?php include("navigation.php"); ?>
   <div id = "bodyheader">
   <!--Select statement from database includes all columns for specified username -->
   <?php
@@ -25,13 +26,9 @@ echo "</div>";
 <form action="mysql.php" method="post" style = "display: inline">
 <select name="studentselect">
 <?php
-// Connecting, selecting database
-$server = "localhost";
-$db = "academicdb";
-$user = "root";
-$password = "";
-$dbconn = mysqli_connect($server, $user, $password, $db)
-    or die('Could not connect: '.mysqli_connect_error());
+
+/* dbconn is referenced from this file */
+require_once('php/mysqli_connect.php');
 
 $query = "SELECT students.first_name AS sfn, teachers.id AS tid, students.last_name AS sln FROM students, teachers WHERE teachers.id = students.teacher_id";
 

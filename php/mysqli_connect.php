@@ -18,15 +18,15 @@ DELETE : Delete existing rows (Remove privilege if not required)
 
 // Defined as constants so that they can't be changed
 // Put information specific to YOUR MySQL database
-DEFINE ('DB_USER', 'username');
-DEFINE ('DB_PASSWORD', 'password');
+DEFINE ('DB_USER', 'root');
+DEFINE ('DB_PASSWORD', '');
 DEFINE ('DB_HOST', 'localhost');
-DEFINE ('DB_NAME', 'database_name');
+DEFINE ('DB_NAME', 'academicdb');
 
 // $dbc will contain a resource link to the database
 // @ keeps the error from showing in the browser
 
-$dbc = @mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
+$dbconn = @mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
 OR die('Could not connect to MySQL: ' .
 mysqli_connect_error());
 ?>

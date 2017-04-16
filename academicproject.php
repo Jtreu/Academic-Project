@@ -14,6 +14,7 @@
 	<title>Academic Project</title>
 </head>
 <body>
+	<?php include("navigation.php"); ?>
 	<div id="bodyheader">
 		<h1>Academic Progress Database</h1>
 		<button id="back" onclick="location.href = 'academicproject.php'" style='display: inline;'>Database Home</button>
@@ -25,12 +26,9 @@
 		<form action="mysql2.php" method="post" style = "display: inline">
 			<select name="teacherselect">
 				<?php
-				$server = "localhost";
-				$db = "academicdb";
-				$user = "root";
-				$password = "";
-				$dbconn = mysqli_connect($server, $user, $password, $db)
-	    		or die('Could not connect: '.mysqli_connect_error());
+				/* dbconn is referenced from this file */
+				require_once('php/mysqli_connect.php');
+
 					$sql = mysqli_query($dbconn, "SELECT first_name, last_name FROM teachers");
 				while ($row = $sql->fetch_assoc()){
 					echo "<option value=\"" . $row['first_name']. " " . $row['last_name']."\">" . $row['first_name'] . " " . $row['last_name'] . "</option>";
