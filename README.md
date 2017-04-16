@@ -15,6 +15,7 @@ Group project for database
 * autoincrement new teacher ids
 * autoincrement new student ids
 * figure out how to calculate current reading level, implement
+    - (Average reading level of all books read by that student + average of assessment grades for that student) / 2
 * add ability to insert new instructors *Nick
 * add ability to insert new books *Nick
 * fix inserting read books *Jameson
