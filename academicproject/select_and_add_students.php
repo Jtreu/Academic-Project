@@ -13,27 +13,24 @@
   <div id = "bodyheader">
   <!--Select statement from database includes all columns for specified username -->
   <?php
-$teacherID = $_POST['teacherselect']; //stores teacherID from index.php teacher select form
-//connecting to database
-$server = "localhost";
-$db = "academicdb";
-$user = "root";
-$password = "";
-$dbconn = mysqli_connect($server, $user, $password, $db)
-  or die('Could not connect: '.mysqli_connect_error());
-  //query to find teacher first and last name
-  $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS tfn, last_name AS tln FROM teachers WHERE teachers.id = $teacherID");
-while ($row = $sql->fetch_assoc()){
-  $teacherFirstName = $row['tfn']; //store teacher names in variables
-  $teacherLastName = $row['tln'];
-}
+    require_once('../php/mysqli_connect.php');
+    include '../navigation.php';
 
-//display teacher name in header
-echo "<h1>$teacherFirstName $teacherLastName</h1>";
-//header home button
-echo "<button id=\"back\" onclick=\"location.href = 'index.php';\" style='display: inline'>Database Home</button>";
-echo "</div>";
-?>
+    $teacherID = $_POST['teacherselect']; //stores teacherID from index.php teacher select form
+
+    //query to find teacher first and last name
+    $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS tfn, last_name AS tln FROM teachers WHERE teachers.id = $teacherID");
+    while ($row = $sql->fetch_assoc()){
+      $teacherFirstName = $row['tfn']; //store teacher names in variables
+      $teacherLastName = $row['tln'];
+    }
+
+    //display teacher name in header
+    echo "<h1>$teacherFirstName $teacherLastName</h1>";
+    //header home button
+    echo "<button id=\"back\" onclick=\"location.href = 'index.php';\" style='display: inline'>Database Home</button>";
+    echo "</div>";
+  ?>
 <!--Dropdown menu for selecting students to edit-->
 <div id="selectstudent">
 <h3>Select Student</h3>

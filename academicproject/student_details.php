@@ -6,14 +6,11 @@
 <body>
   <div id = "bodyheader">
   <?php
+    require_once('../php/mysqli_connect.php');
+    include '../navigation.php';
+
     $studentID = $_POST['studentselect']; //stores studentID from select_and_add_students.php student select form
-    //connect to database
-    $server = "localhost";
-    $db = "academicdb";
-    $user = "root";
-    $password = "";
-    $dbconn = mysqli_connect($server, $user, $password, $db)
-      or die('Could not connect: '.mysqli_connect_error());
+
       //query to find student first and last name
     $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS sfn, last_name AS sln FROM students WHERE students.id = $studentID");
     while ($row = $sql->fetch_assoc()){

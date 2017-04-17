@@ -4,6 +4,9 @@
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
 <?php
+  require_once('../php/mysqli_connect.php');
+  include '../navigation.php';
+
 echo $studentFirstName = $_POST['sfn'];
 echo $studentLastName = $_POST['sln'];
 echo $teacherID = $_POST['tid'];
@@ -11,13 +14,6 @@ echo $teacherFirstName = $_POST['tfn'];
 echo $teacherLastName = $_POST['tln'];
 echo $goalReadingLevel = $_POST['grl'];
 echo $startingReadingLevel = $_POST['srl'];
-$server = "localhost";
-$db = "academicdb";
-$user = "root";
-$password = "";
-$dbconn = mysqli_connect($server, $user, $password, $db)
-  or die('Could not connect: '.mysqli_connect_error());
-
 
   $sql = "INSERT INTO students(first_name, last_name, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
    VALUES ('$studentFirstName', '$studentLastName', $startingReadingLevel, $startingReadingLevel, $goalReadingLevel, $teacherID)";
