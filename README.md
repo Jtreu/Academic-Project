@@ -15,11 +15,6 @@ Group project for database
 
 * calculate current reading level
 * calculate grades
-* require headers / fix database connection redundancy*Jameson 
-
-## TO DO: ??
+* make nav bar links standalone (add new book, add new teacher, student details)
 * input checking
 * better navigation after submissions
-
-
-    - (Average reading level of all books read by that student + average of assessment grades for that student) / 2
