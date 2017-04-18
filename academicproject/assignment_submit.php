@@ -8,7 +8,7 @@ $assignmentName = $_POST['asn'];
 $assignmentGrade = $_POST['asg'];
 $studentID = $_POST['sid'];
 
-require_once('php/mysqli_connect.php');
+require_once('../php/mysqli_connect.php');
 
   $sql = "INSERT INTO assessments(s_id, assessment_name, assessment_grade) VALUES ($studentID, '$assignmentName', $assignmentGrade)";
 $dbconn->query($sql);

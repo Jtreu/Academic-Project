@@ -1,5 +1,5 @@
 <nav class="navbar">
-  <a href="home.php">Home</a> |
+  <a href="index.php">Home</a> |
   <a href="new_book_submit.php">new_book_submit.php</a> |
   <a href="read_book_submit.php">read_book_submit.php</a> |
   <a href="select_and_add_students.php">select_and_add_students.php</a> |
