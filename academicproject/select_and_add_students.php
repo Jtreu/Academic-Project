@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
 <body>
+  <?php include '../navigation.php';?>
   <div id = "bodyheader">
   <!--Select statement from database includes all columns for specified username -->
   <?php
     require_once('../php/mysqli_connect.php');
-    include '../navigation.php';
 
     $required = array('teacherselect');
 

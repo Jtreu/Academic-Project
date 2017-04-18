@@ -4,10 +4,10 @@
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
 <body>
+  <?php include '../navigation.php'; ?>
   <div id = "bodyheader">
   <?php
     require_once('../php/mysqli_connect.php');
-    include '../navigation.php';
 
     $studentID = $_POST['studentselect']; //stores studentID from select_and_add_students.php student select form
 
@@ -74,7 +74,7 @@
   <p>Add book</p> <!--add book to student read list-->
   <form action="read_book_submit.php" method="post" style = "display: inline"><!--submit form to read_book_submit.php-->
     <input type = "hidden" name = "sid" value = "<?php echo $studentID;?>"> <!--send studentID to read_book_submit-->
-      <select name="bookselect">
+      <select name="bookselect" style = "width: 60%;">
       <?php
       //connect to database
         $server = "localhost";
