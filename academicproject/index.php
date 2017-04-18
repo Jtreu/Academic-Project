@@ -23,6 +23,10 @@
 </head>
 
 <body>
+	<?php
+		require_once('../php/mysqli_connect.php');
+		include '../navigation.php';
+	?>
 	<div id="bodyheader"> <!--header with home button-->
 		<h1>Academic Progress Database</h1>
 		<button id="back" onclick="location.href = 'index.php'" style='display: inline;'>Database Home</button>
@@ -33,22 +37,17 @@
 		<form action="select_and_add_students.php" method="post" style="display: inline">
 			<select name="teacherselect">
 				<?php
-				$server = "localhost";
-				$db = "academicdb";
-				$user = "root";
-				$password = "";
-				$dbconn = mysqli_connect($server, $user, $password, $db)
-	    		or die('Could not connect: '.mysqli_connect_error());
+					require_once('../php/mysqli_connect.php');
 					//query to populate teacher list
 					$sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS tfn, last_name AS tln, id FROM teachers");
-				while ($row = $sql->fetch_assoc()){
-					//teacher first names, last names, and IDs are stored
-					$teacherFirstName = $row['tfn'];
-					$teacherLastName = $row['tln'];
-					$teacherID = $row['id'];
-					//Dropdown menu is populated with teacher first and last names, option values assigned teacherID
-					echo "<option value='$teacherID'>$teacherFirstName $teacherLastName</option>";
-				}
+					while ($row = $sql->fetch_assoc()){
+						//teacher first names, last names, and IDs are stored
+						$teacherFirstName = $row['tfn'];
+						$teacherLastName = $row['tln'];
+						$teacherID = $row['id'];
+						//Dropdown menu is populated with teacher first and last names, option values assigned teacherID
+						echo "<option value='$teacherID'>$teacherFirstName $teacherLastName</option>";
+					}
 				?>
 			</select>
 		<input type="submit">	<!--form sends $teacherID to select_and_add_students.php-->

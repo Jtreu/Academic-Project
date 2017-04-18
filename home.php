@@ -21,6 +21,6 @@
 }
 
   .navbar a:hover{
-    border: 3px solid rgb(48, 209, 55);
+    border: 5px solid rgb(48, 209, 55);
   }
 </style>

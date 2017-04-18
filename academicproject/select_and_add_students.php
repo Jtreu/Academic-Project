@@ -16,13 +16,45 @@
     require_once('../php/mysqli_connect.php');
     include '../navigation.php';
 
-    $teacherID = $_POST['teacherselect']; //stores teacherID from index.php teacher select form
+    $required = array('teacherselect');
 
-    //query to find teacher first and last name
-    $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS tfn, last_name AS tln FROM teachers WHERE teachers.id = $teacherID");
-    while ($row = $sql->fetch_assoc()){
-      $teacherFirstName = $row['tfn']; //store teacher names in variables
-      $teacherLastName = $row['tln'];
+    // Loop over field names, make sure each one exists and is not empty
+    $error = false;
+    foreach($required as $field) {
+      if (empty($_POST[$field])) {
+        $error = true;
+      }
+    }
+
+    $teacherID = isset($_POST['teacherselect']); //stores teacherID from index.php teacher select form
+
+    if($error) {
+    ?>
+      <form action="select_and_add_students.php" method="post" style="display: inline">
+        <select name="teacherselect">
+          <?php
+            require_once('../php/mysqli_connect.php');
+            //query to populate teacher list
+            $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS tfn, last_name AS tln, id FROM teachers");
+            while ($row = $sql->fetch_assoc()){
+              //teacher first names, last names, and IDs are stored
+              $teacherFirstName = $row['tfn'];
+              $teacherLastName = $row['tln'];
+              $teacherID = $row['id'];
+              //Dropdown menu is populated with teacher first and last names, option values assigned teacherID
+              echo "<option value='$teacherID'>$teacherFirstName $teacherLastName</option>";
+            }
+          ?>
+        </select>
+      <input type="submit">	<!--form sends $teacherID to select_and_add_students.php-->
+    <?php
+    } else {
+      //query to find teacher first and last name
+      $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS tfn, last_name AS tln FROM teachers WHERE teachers.id = $teacherID");
+      while ($row = $sql->fetch_assoc()){
+        $teacherFirstName = $row['tfn']; //store teacher names in variables
+        $teacherLastName = $row['tln'];
+      }
     }
 
     //display teacher name in header
@@ -38,12 +70,8 @@
 <select name="studentselect">
 <?php
 //connecting to database
-$server = "localhost";
-$db = "academicdb";
-$user = "root";
-$password = "";
-$dbconn = mysqli_connect($server, $user, $password, $db)
-    or die('Could not connect: '.mysqli_connect_error());
+require_once('../php/mysqli_connect.php');
+
 //query to populate student dropdown menu
 $query = "SELECT DISTINCT students.first_name AS sfn, students.last_name AS sln, students.id AS sid FROM students, teachers WHERE $teacherID = students.teacher_id";
 $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
@@ -68,14 +96,14 @@ $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
 <div id = "addnewstudent" style = "display: none"> <!-- New student submission form -->
   <h3>Add New Student Under <?php echo "$teacherFirstName $teacherLastName";?></h3>
 <form method="post" action ="student_submit.php"style = "display: block">
-<input type="text" name ="sfn"placeholder = "first name" size = "10"></input><!--first name-->
-<input type="text" name ="sln"placeholder = "last name" size = "10"></input><!--last name-->
-<input type = "text" name = "srl" placeholder = "level" size = "3"></input><!---reading level-->
-<input type = "text" name = "grl" placeholder = "goal" size = "3"></input><!--goal level-->
-<input type = "hidden" name = "tid" value = "<?php echo $teacherID;?>"> <!--hidden values: teacherID, teacher first and last name-->
-<input type = "hidden" name = "tfn" value = "<?php echo $teacherFirstName;?>">
-<input type = "hidden" name = "tln" value = "<?php echo $teacherLastName;?>">
-<input type="submit" name = "nssubmit"></input>
+  <input type="text" name ="sfn"placeholder = "first name" size = "10"></input><!--first name-->
+  <input type="text" name ="sln"placeholder = "last name" size = "10"></input><!--last name-->
+  <input type = "text" name = "srl" placeholder = "level" size = "3"></input><!---reading level-->
+  <input type = "text" name = "grl" placeholder = "goal" size = "3"></input><!--goal level-->
+  <input type = "hidden" name = "tid" value = "<?php echo $teacherID;?>"> <!--hidden values: teacherID, teacher first and last name-->
+  <input type = "hidden" name = "tfn" value = "<?php echo $teacherFirstName;?>">
+  <input type = "hidden" name = "tln" value = "<?php echo $teacherLastName;?>">
+  <input type="submit" name = "nssubmit"></input>
 </form>
 </div>
 </body>
