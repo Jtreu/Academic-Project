@@ -56,6 +56,7 @@ $error = false;
 foreach($required as $field) {
   if (empty($_POST[$field])) {
     $error = true;
+    echo "there was an error";
   }
 }
 
