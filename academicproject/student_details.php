@@ -77,7 +77,7 @@
   mysqli_close($dbconn);
   ?>
 
-  <p>Add book</p> <!--add book to student read list-->
+  <label for="sid">Add book a student has read</label> <!--add book to student read list-->
   <form action="read_book_submit.php" method="post" style = "display: inline"><!--submit form to read_book_submit.php-->
     <input type = "hidden" name = "sid" value = "<?php echo $static_studentID;?>"> <!--send studentID to read_book_submit-->
       <select name="bookselect" style = "width: 60%;">
@@ -100,6 +100,7 @@
 </div>
 <div id = "rightdiv" style = "float: left; width: 400px; height: 100%;"><!--new assignment submission form-->
   <form method="post" action = "assignment_submit.php"style = "display: inline"><!--form sent to assignment_submit.php-->
+    <label for="asn">Add an assignment the student has done</label>
     <input name = "asn" type="text" placeholder = "assessment name" id="assessment_name" size = "30"></input><!--assignment name-->
     <input name = "asg" type="text" placeholder = "grade" id="assessment_grade" size = "5"></input><!--grade-->
     <input type = "hidden" name = "sid" value = "<?php echo $static_studentID;?>"><!--hidden values also sent-->
@@ -115,7 +116,7 @@
       echo "<tr><td>";
       echo $assessmentName = $row['an']; //each row is an assignment and its grade
       echo "</td><td>";
-      echo $assessmentGrade = $row['ag'];
+      echo $assessmentGrade = $row['ag'] . "%";
       echo "</td></tr>";
     }
     echo "</table>";

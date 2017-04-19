@@ -10,97 +10,100 @@ USE academicdb;
 
 /* teacher.id should auto increment */
 INSERT INTO teachers(first_name, last_name)
-VALUES ('Test', 'Teacher');
+VALUES ('Joanne', 'Higgins');
+
+INSERT INTO teachers(first_name, last_name)
+VALUES ('Barbara', 'Smith');
 
 /* Inserting 3 students into the student table */
 /* student.id should auto increment */
-INSERT INTO students(first_name, last_name, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
+INSERT INTO students(first_name, last_name, grade, age, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
 SELECT DISTINCT
-  'Test', 'Child1', 25, 50, 100, id
-FROM teachers WHERE teachers.first_name = 'Test' AND
-                    teachers.last_name  = 'Teacher';
+  'Christopher', 'Coolidge', 6, 12, 25, 50, 100, id
+FROM teachers WHERE teachers.first_name = 'Joanne' AND
+                    teachers.last_name  = 'Higgins';
 
-INSERT INTO students(first_name, last_name, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
+INSERT INTO students(first_name, last_name, grade, age, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
 SELECT DISTINCT
-  'Test', 'Child2', 25, 50, 100, id
-FROM teachers WHERE teachers.first_name = 'Test' AND
-                    teachers.last_name  = 'Teacher';
+  'Sally', 'Summer', 6, 12, 25, 50, 100, id
+FROM teachers WHERE teachers.first_name = 'Joanne' AND
+                    teachers.last_name  = 'Higgins';
 
-INSERT INTO students(first_name, last_name, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
+INSERT INTO students(first_name, last_name, grade, age, starting_reading_lvl, current_reading_lvl, goal_reading_lvl, teacher_id)
 SELECT DISTINCT
-  'Test', 'Child3', 25, 50, 100, id
-FROM teachers WHERE teachers.first_name = 'Test' AND
-                    teachers.last_name  = 'Teacher';
+  'Billy', 'Bojangles', 6, 12, 25, 50, 100, id
+FROM teachers WHERE teachers.first_name = 'Joanne' AND
+                    teachers.last_name  = 'Higgins';
 
 /* books.id should auto increment */
 INSERT INTO books(name, reading_lvl)
-VALUES ('test_book', 100);
+VALUES ('The catcher in the rye', 100);
 
 /* insert the 3 default students under the tutiledge of test teacher */
-/* Test Child1 under the tutiledge of Test Teacher */
+/* Test Coolidge under the tutiledge of Test Teacher */
 INSERT INTO students_under_teacher(t_id, s_id)
 SELECT DISTINCT t.id, s.id
 FROM teachers t, students s
-WHERE t.first_name = 'Test' AND
-      t.last_name = 'Teacher' AND
-      s.first_name = 'Test' AND
-      s.last_name = 'Child1';
+WHERE t.first_name = 'Joanne' AND
+      t.last_name = 'Higgins' AND
+      s.first_name = 'Christopher' AND
+      s.last_name = 'Coolidge';
 
-/* Test Child2 under the tutiledge of Test Teacher */
+/* Test Summer under the tutiledge of Test Teacher */
 INSERT INTO students_under_teacher(t_id, s_id)
 SELECT DISTINCT t.id, s.id
 FROM teachers t, students s
-WHERE t.first_name = 'Test' AND
-      t.last_name = 'Teacher' AND
-      s.first_name = 'Test' AND
-      s.last_name = 'Child2';
+WHERE t.first_name = 'Joanne' AND
+      t.last_name = 'Higgins' AND
+      s.first_name = 'Sally' AND
+      s.last_name = 'Summer';
 
-/* Test Child3 under the tutiledge of Test Teacher */
+/* Test Bojangles under the tutiledge of Test Teacher */
 INSERT INTO students_under_teacher(t_id, s_id)
 SELECT DISTINCT t.id, s.id
 FROM teachers t, students s
-WHERE t.first_name = 'Test' AND
-      t.last_name = 'Teacher' AND
-      s.first_name = 'Test' AND
-      s.last_name = 'Child3';
+WHERE t.first_name = 'Joanne' AND
+      t.last_name = 'Higgins' AND
+      s.first_name = 'Billy' AND
+      s.last_name = 'Bojangles';
 
 /* all default test students have read the same book */
 INSERT INTO books_read(s_id, b_id)
 SELECT DISTINCT s.id, b.id
 FROM students s, books b
-WHERE s.first_name = 'Test' AND
-      s.last_name = 'Child1' AND
-      b.name = 'test_book';
+WHERE s.first_name = 'Christopher' AND
+      s.last_name = 'Coolidge' AND
+      b.name = 'The catcher in the rye';
 
 INSERT INTO books_read(s_id, b_id)
 SELECT DISTINCT s.id, b.id
 FROM students s, books b
-WHERE s.first_name = 'Test' AND
-      s.last_name = 'Child2' AND
-      b.name = 'test_book';
+WHERE s.first_name = 'Sally' AND
+      s.last_name = 'Summer' AND
+      b.name = 'The catcher in the rye';
 
 INSERT INTO books_read(s_id, b_id)
 SELECT DISTINCT s.id, b.id
 FROM students s, books b
-WHERE s.first_name = 'Test' AND
-      s.last_name = 'Child3' AND
-      b.name = 'test_book';
+WHERE s.first_name = 'Billy' AND
+      s.last_name = 'Bojangles' AND
+      b.name = 'The catcher in the rye';
 
 /* insert 3 different tests and grades for the test students */
 INSERT INTO assessments(s_id, assessment_name, assessment_grade)
 SELECT DISTINCT s.id, 'Homework1', 50
 FROM students s
-WHERE s.first_name = 'Test' AND
-      s.last_name = 'Child1';
+WHERE s.first_name = 'Christopher' AND
+      s.last_name = 'Coolidge';
 
 INSERT INTO assessments(s_id, assessment_name, assessment_grade)
 SELECT DISTINCT s.id, 'Homework1', 75
 FROM students s
-WHERE s.first_name = 'Test' AND
-      s.last_name = 'Child2';
+WHERE s.first_name = 'Sally' AND
+      s.last_name = 'Summer';
 
 INSERT INTO assessments(s_id, assessment_name, assessment_grade)
 SELECT DISTINCT s.id, 'Homework1', 100
 FROM students s
-WHERE s.first_name = 'Test' AND
-      s.last_name = 'Child3';
+WHERE s.first_name = 'Billy' AND
+      s.last_name = 'Bojangles';

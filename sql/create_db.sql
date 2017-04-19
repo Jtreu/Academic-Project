@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS students (
   teacher_id int(11) NOT NULL,
   first_name varchar(255) default NULL,
   last_name varchar(255) default NULL,
+  grade int(2) default NULL,
+  age int(2) default NULL,
   /* will have at most 3 digits: xxx */
   starting_reading_lvl int(3) default 0,
   current_reading_lvl int(3) default 0,
