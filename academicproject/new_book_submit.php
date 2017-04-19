@@ -7,8 +7,8 @@
 require_once('../php/mysqli_connect.php');
 include '../navigation.php';
 
-$bookName = isset($_POST['bkn']);
-$bookReadingLevel = isset($_POST['bkrl']);
+$bookName = $_POST['bkn'];
+$bookReadingLevel = $_POST['bkrl'];
 
 if(isset($bookName) && isset($bookReadingLevel)) {
   $sql = "INSERT INTO books(name, reading_lvl) VALUES ('$bookName', $bookReadingLevel)";
