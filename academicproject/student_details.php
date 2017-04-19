@@ -65,25 +65,46 @@
       $currentReadingLevel = $row['crl'];
       $goalReadingLevel = $row['grl'];
       $startingReadingLevel = $row['srl'];
-      $bookName[] = $row['bkn'];
-      $bookReadingLevel[] = $row['bkrl'];
-      $bookID = $row['bid'];
+    }
+    $query = "SELECT books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid
+             FROM teachers, students, books, books_read
+             WHERE students.first_name = '$studentFirstName' AND
+                   students.last_name = '$studentLastName' AND
+                   teachers.id = students.teacher_id AND
+                   books_read.s_id = students.id AND
+                   books.id = books_read.b_id";
+
+    $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
+
+    if(mysqli_num_rows($result)) {
+      echo "<script>console.log('The books read result set was not empty')</script>";
+      while($row = mysqli_fetch_assoc($result)) {
+        $bookName[] = $row['bkn'];
+        $bookReadingLevel[] = $row['bkrl'];
+        $bookID = $row['bid'];
+        $showBooksTable = true;
+      }
+    } else {
+      echo "<script>console.log('The books read result set was empty')</script>";
+      $showBooksTable = False;
     }
 //creates table of student info
-  echo "<div style = 'float:left; width: 400px; height: 100%;'><table><th colspan = '2'>Student Info</th><tr><td>Teacher</td><td>$teacherFirstName $teacherLastName</td></tr><tr><td>Starting Reading Level</td><td>$startingReadingLevel</td></tr><tr><td>GoalReading Level</td><td>$goalReadingLevel</td></tr><tr><td>Current Reading Level</td><td>$currentReadingLevel</td></tr></table>";
-  echo "<table>\n";
-  echo "<tr><th colspan = '2'>Books Read</th></tr>";
-  echo "\t<tr>\n";
-  echo "\t\t<td>Book Name</td>\n";
-  echo "\t\t<td>Reading Level</td>\n";
-  echo "\t</tr>\n";
-  echo "\t<tr>\n";
-  foreach (array_combine($bookName, $bookReadingLevel) as $bookName => $bookReadingLevel) {
-    echo "\t\t<td>$bookName</td>\n";
-    echo "\t\t<td>$bookReadingLevel</td>\n";
+    echo "<div style = 'float:left; width: 400px; height: 100%;'><table><th colspan = '2'>Student Info</th><tr><td>Teacher</td><td>$teacherFirstName $teacherLastName</td></tr><tr><td>Starting Reading Level</td><td>$startingReadingLevel</td></tr><tr><td>GoalReading Level</td><td>$goalReadingLevel</td></tr><tr><td>Current Reading Level</td><td>$currentReadingLevel</td></tr></table>";
+    echo "<table>\n";
+    if($showBooksTable) {
+    echo "<tr><th colspan = '2'>Books Read</th></tr>";
+    echo "\t<tr>\n";
+    echo "\t\t<td>Book Name</td>\n";
+    echo "\t\t<td>Reading Level</td>\n";
     echo "\t</tr>\n";
-  }
-  echo "</table>\n";
+    echo "\t<tr>\n";
+    foreach (array_combine($bookName, $bookReadingLevel) as $bookName => $bookReadingLevel) {
+      echo "\t\t<td>$bookName</td>\n";
+      echo "\t\t<td>$bookReadingLevel</td>\n";
+      echo "\t</tr>\n";
+    }
+    }
+    echo "</table>\n";
   mysqli_free_result($result);
   mysqli_close($dbconn);
   ?>
