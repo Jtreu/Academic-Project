@@ -10,7 +10,7 @@
     session_start();
     require_once('../php/mysqli_connect.php');
 
-    if(isset($_POST['studentselect'])) {
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
       $static_studentID = $_POST['studentselect']; //stores studentID from select_and_add_students.php student select form
       $_SESSION["studentid"] = $static_studentID;
     } else {
@@ -33,15 +33,26 @@
     require_once('../php/mysqli_connect.php');
 
       //query to find all current student info
-    $query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn, students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl, students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid
+    $query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn,
+                     students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl,
+                     students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid
               FROM teachers, students, books, books_read
-              WHERE students.first_name = '$studentFirstName' AND students.last_name = '$studentLastName' AND teachers.id = students.teacher_id AND books_read.s_id = students.id AND books.id = books_read.b_id";
+              WHERE students.first_name = '$studentFirstName' AND
+                    students.last_name = '$studentLastName' AND
+                    teachers.id = students.teacher_id";
     //Does not work for students with no books, needs fix
 ///////////////////////////////////////////////////////////
     //Query without books
     /*$query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn, students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl, students.goal_reading_lvl AS grl FROM teachers, students WHERE students.first_name = '$studentFirstName' AND students.last_name = '$studentLastName' AND teachers.id = students.teacher_id";
     */
     $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
+
+    if(mysqli_num_rows($result)) {
+      echo "<script>console.log('The result set was not empty')</script>";
+    } else {
+      echo "<script>console.log('The result set was empty')</script>";
+    }
+
     $column = array();
     while ($row = mysqli_fetch_assoc($result)) {
     //stores all data in variables

@@ -6,3 +6,28 @@ student_details.php
 
 - I changed the name of the global variable 'studentID' to 'static_studentID' becuase it seemed to be changing
   the value somewhere else in the code and posting the wrong ID to 'read_book_submit'
+
+- I changed this query:       
+
+//query to find all current student info
+ $query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn,
+                     students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl,
+                     students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid
+              FROM teachers, students, books, books_read
+              WHERE students.first_name = '$studentFirstName' AND
+                    students.last_name = '$studentLastName' AND
+                    teachers.id = students.teacher_id AND
+                    books_read.s_id = students.id AND
+                    books.id = books_read.b_id";
+
+  to this:
+    //query to find all current student info
+    $query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn,
+                     students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl,
+                     students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid
+              FROM teachers, students, books, books_read
+              WHERE students.first_name = '$studentFirstName' AND
+                    students.last_name = '$studentLastName' AND
+                    teachers.id = students.teacher_id";
+
+	

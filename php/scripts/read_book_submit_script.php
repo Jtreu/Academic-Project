@@ -16,5 +16,18 @@
     $sql = "INSERT INTO books_read(s_id, b_id) VALUES ('$studentID', '$bookID')";
     $dbconn->query($sql);
     echo "<h4>book with ID '$bookID' attributed to student ID '$studentID' has been added to the books_read table</h4>";
-    echo "<h5> Alright, $studentFirstName $studentLastName has read '$bookName'!</h5>";
+    echo "<span> Alright, $studentFirstName $studentLastName has read '$bookName'!</span>";
 ?>
+
+<style>
+  span {
+    display:block;
+    color: white;
+    font-size: 1.75em;
+    margin: auto;
+    border: 3px solid green;
+    padding: 10px;
+    background-color: green;
+    text-align: center;
+  }
+</style>

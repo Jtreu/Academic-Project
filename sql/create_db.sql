@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS teachers (
   id int(11) NOT NULL AUTO_INCREMENT,
   first_name varchar(255) default NULL,
   last_name varchar(255) default NULL,
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
+  CHECK (first_name <> "")
 );
 
 CREATE TABLE IF NOT EXISTS students (

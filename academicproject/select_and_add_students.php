@@ -6,11 +6,15 @@
   document.getElementById("addnewstudent").style.display = "block";
   }
   </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <link rel="stylesheet" href="academicproject.css" </link>
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 </head>
 <body>
-  <?php include '../navigation.php';?>
+  <?php
+    include '../navigation.php';
+    session_start();
+  ?>
   <div id = "bodyheader">
   <!--Select statement from database includes all columns for specified username -->
   <?php
@@ -25,8 +29,12 @@
         $error = true;
       }
     }
-
-    $teacherID = $_POST['teacherselect']; //stores teacherID from index.php teacher select form
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $teacherID = $_POST['teacherselect']; //stores studentID from select_and_add_students.php student select form
+      $_SESSION["teacherid"] = $teacherID;
+    } else {
+      $teacherID = $_SESSION["teacherid"];
+    }
 
     if($error) {
     ?>
@@ -65,9 +73,10 @@
   ?>
 <!--Dropdown menu for selecting students to edit-->
 <div id="selectstudent">
-<h3>Select Student</h3>
+<h3 id="selectstudentheader">Select Student</h3>
+<div id="wrapper_selectstudent">
 <form action="student_details.php" method="post" style = "display: inline">
-<select name="studentselect">
+<select id="studentSelect" name="studentselect">
 <?php
 //connecting to database
 require_once('../php/mysqli_connect.php');
@@ -75,6 +84,17 @@ require_once('../php/mysqli_connect.php');
 //query to populate student dropdown menu
 $query = "SELECT DISTINCT students.first_name AS sfn, students.last_name AS sln, students.id AS sid FROM students, teachers WHERE $teacherID = students.teacher_id";
 $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
+
+
+if(mysqli_num_rows($result)) {
+  echo "<script>$('#wrapper_selectstudent').show()</script>";
+  echo "<script>console.log('The result set was not empty')</script>";
+} else {
+  echo "<script>$('#wrapper_selectstudent').hide()</script>";
+  echo "<script>$('#selectstudentheader').html(\"No students are under $teacherFirstName $teacherLastName, why don't you add one?\")</script>";
+  echo "<script>console.log('The result set was empty')</script>";
+}
+
   while ($row = $result->fetch_assoc()){
     //storing student first name, last name, and studentID
     $studentFirstName = $row['sfn'];
@@ -89,9 +109,9 @@ $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
 </select>
 <input type="submit" name = "ssubmit" id = "bigbutton"></input><!--form sends $studentID to student_details.php-->
 </form>
-
-<p style = "display: inline">OR</p>
-<button onclick = "newStudent()" id = "studentselectbutton">Add New Student</button>
+<span style = "display: inline">OR</span>
+</div>
+<button onclick = "newStudent()" id = "studentselectbutton">Add New Student under <?php echo "$teacherFirstName $teacherLastName" ?></button>
 </div>
 <div id = "addnewstudent" style = "display: none"> <!-- New student submission form -->
   <h3>Add New Student Under <?php echo "$teacherFirstName $teacherLastName";?></h3>
@@ -108,3 +128,9 @@ $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
 </div>
 </body>
 </html>
+
+<style>
+  #studentdetailsform {
+    display:none;
+  }
+</style>

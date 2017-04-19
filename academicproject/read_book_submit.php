@@ -46,6 +46,7 @@
 </head>
 <body>
 <?php
+session_start();
 require_once('../php/mysqli_connect.php');
 include '../navigation.php';
 
@@ -56,13 +57,16 @@ $error = false;
 foreach($required as $field) {
   if (empty($_POST[$field])) {
     $error = true;
-    echo "there was an error";
+    // echo "$field did not post<br/>";
   }
 }
 
-// isset sets your variable equal to the posted variable only if something was actually posted
-$studentID = $_POST['sid'];
-$bookID = $_POST['bookselect'];
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $studentID = $_POST['sid'];
+  $bookID = $_POST['bookselect'];
+} else {
+  $studentID = $_SESSION["studentid"];
+}
 
 /* Testing code to make sure that studentID and bookID were posted correctly */
 
