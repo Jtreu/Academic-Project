@@ -18,9 +18,9 @@ DELETE : Delete existing rows (Remove privilege if not required)
 
 // Defined as constants so that they can't be changed
 // Put information specific to YOUR MySQL database
+DEFINE ('DB_HOST', 'localhost');
 DEFINE ('DB_USER', 'root');
 DEFINE ('DB_PASSWORD', '');
-DEFINE ('DB_HOST', 'localhost');
 DEFINE ('DB_NAME', 'academicdb');
 
 // $dbc will contain a resource link to the database

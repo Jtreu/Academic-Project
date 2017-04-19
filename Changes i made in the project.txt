@@ -1,0 +1,8 @@
+*****CHANGES I MADE*****
+
+********************
+student_details.php
+********************
+
+- I changed the name of the global variable 'studentID' to 'static_studentID' becuase it seemed to be changing
+  the value somewhere else in the code and posting the wrong ID to 'read_book_submit'

@@ -49,7 +49,7 @@
 require_once('../php/mysqli_connect.php');
 include '../navigation.php';
 
-$required = array('sid', 'bookSelect');
+$required = array('sid', 'bookselect');
 
 // Loop over field names, make sure each one exists and is not empty
 $error = false;
@@ -61,8 +61,10 @@ foreach($required as $field) {
 }
 
 // isset sets your variable equal to the posted variable only if something was actually posted
-$studentID = isset($_POST['sid']);
-$bookID = isset($_POST['bookselect']);
+$studentID = $_POST['sid'];
+$bookID = $_POST['bookselect'];
+
+/* Testing code to make sure that studentID and bookID were posted correctly */
 
 if($error) {
 ?>
@@ -114,10 +116,37 @@ if($error) {
     </div>
 <?php
 } else {
+  ?>
+  <script>
+    /* We don't want to show these select boxes if they came from the student_details page */
+    $('#studentSelect').hide();
+    $('bookSelect').hide();
+    )
+  </script>
+  <?php
+  require_once('../php/mysqli_connect.php');
+  //query to populate teacher list
+  $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS sfn, last_name AS sln FROM students WHERE id = $studentID");
+
+  while ($row = $sql->fetch_assoc()){
+    //teacher first names, last names, and IDs are stored
+    $studentFirstName = $row['sfn'];
+    $studentLastName = $row['sln'];
+  }
     $sql = "INSERT INTO books_read(s_id, b_id) VALUES ('$studentID', '$bookID')";
     $dbconn->query($sql);
-    echo "<h4>book with ID '$bookID' attributed to student ID '$studentID' has been added to the books_read table</h4>";
-    echo "<h5> Alright, $studentFirstName $studentLastName has read '$bookName'!</h5>";
+
+    // Get the book name
+    $sql  = mysqli_query($dbconn, "SELECT DISTINCT name AS bkn FROM books WHERE id = $bookID");
+
+    while( $row = $sql->fetch_assoc()) {
+      $bookName = $row['bkn'];
+    }
+
+    echo "<div class='checkok'>";
+    echo "<span>Alright, $studentFirstName $studentLastName has read '$bookName'!</span>";
+    echo "<a href='student_details.php'>Return to student details</a>";
+    echo "</div>";
 }
 ?>
 </body>
@@ -128,8 +157,42 @@ if($error) {
     display:inline-block;
   }
 
-  h5 {
-    color: green;
+  .checkok {
+    display: block;
+    width: 100%;
+  }
+  .checkok a {
+    margin-top: 100px;
+    display:block;
+    border: 3px solid grey;
+    background-color: inherit;
+    color: black;
+    text-decoration: none;
+    font-size: 1.25em;
+    width: 25%;
+    margin-left: 40%;
+    border: 3px solid rgb(116, 171, 201);
+    color: white;
+    text-align: center;
+    padding: 5px 5px 5px 5px;
+  }
+
+  .checkok a:hover {
+    background-color:#2F333E;
+    font-size: 1.50em;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+  }
+
+  span {
+    display:block;
+    color: white;
     font-size: 1.75em;
+    margin: auto;
+    border: 3px solid green;
+    padding: 10px;
+    background-color: green;
+    text-align: center;
   }
 </style>

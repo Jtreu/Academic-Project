@@ -38,8 +38,11 @@
   transition: 0.3s
 }
   .navbar a:hover{
-background-color:#2F333E
-
+    background-color:#2F333E;
+    font-size: 1.50em;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
 }
   #navbar {
     height:100%;

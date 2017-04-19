@@ -7,12 +7,20 @@
   <?php include '../navigation.php'; ?>
   <div id = "bodyheader">
   <?php
+    session_start();
     require_once('../php/mysqli_connect.php');
 
-    $studentID = $_POST['studentselect']; //stores studentID from select_and_add_students.php student select form
+    if(isset($_POST['studentselect'])) {
+      $static_studentID = $_POST['studentselect']; //stores studentID from select_and_add_students.php student select form
+      $_SESSION["studentid"] = $static_studentID;
+    } else {
+      $static_studentID = $_SESSION["studentid"];
+    }
+    /* Code for testing if $studentID was correctly posted */
+    echo "Student ID: " . $static_studentID . "<br/>";
 
-      //query to find student first and last name
-    $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS sfn, last_name AS sln FROM students WHERE students.id = $studentID");
+    // Query to find student first and last name
+    $sql = mysqli_query($dbconn, "SELECT DISTINCT first_name AS sfn, last_name AS sln FROM students WHERE students.id = $static_studentID");
     while ($row = $sql->fetch_assoc()){
       $studentFirstName = $row['sfn']; //store student names in variables
       $studentLastName = $row['sln'];
@@ -21,20 +29,18 @@
     //header home button
     echo "<button id=\"back\" onclick=\"location.href = 'index.php';\" style='display: inline'>Database Home</button>";
     echo "</div>";
-    $server = "localhost";
-    $db = "academicdb";
-    $user = "root";
-    $password = "";
-    $dbconn = mysqli_connect($server, $user, $password, $db)
-      or die('Could not connect: '.mysqli_connect_error());
+
+    require_once('../php/mysqli_connect.php');
+
       //query to find all current student info
-    $query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn, students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl, students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid FROM teachers, students, books, books_read WHERE students.first_name = '$studentFirstName' AND students.last_name = '$studentLastName' AND teachers.id = students.teacher_id AND books_read.s_id = students.id AND books.id = books_read.b_id";
+    $query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn, students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl, students.goal_reading_lvl AS grl, books.name AS bkn, books.reading_lvl AS bkrl, books_read.b_id AS bid
+              FROM teachers, students, books, books_read
+              WHERE students.first_name = '$studentFirstName' AND students.last_name = '$studentLastName' AND teachers.id = students.teacher_id AND books_read.s_id = students.id AND books.id = books_read.b_id";
     //Does not work for students with no books, needs fix
 ///////////////////////////////////////////////////////////
     //Query without books
     /*$query = "SELECT teachers.first_name AS tfn, teachers.last_name AS tln, students.id AS sid, students.first_name AS sfn, students.last_name AS sln, students.starting_reading_lvl AS srl, students.current_reading_lvl AS crl, students.goal_reading_lvl AS grl FROM teachers, students WHERE students.first_name = '$studentFirstName' AND students.last_name = '$studentLastName' AND teachers.id = students.teacher_id";
     */
-
     $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
     $column = array();
     while ($row = mysqli_fetch_assoc($result)) {
@@ -43,6 +49,7 @@
       $studentLastName = $row['sln'];
       $teacherFirstName = $row['tfn'];
       $teacherLastName = $row['tln'];
+      /* This is where studentID was being changed */
       $studentID = $row['sid'];
       $currentReadingLevel = $row['crl'];
       $goalReadingLevel = $row['grl'];
@@ -51,7 +58,6 @@
       $bookReadingLevel[] = $row['bkrl'];
       $bookID = $row['bid'];
     }
-
 //creates table of student info
   echo "<div style = 'float:left; width: 400px; height: 100%;'><table><th colspan = '2'>Student Info</th><tr><td>Teacher</td><td>$teacherFirstName $teacherLastName</td></tr><tr><td>Starting Reading Level</td><td>$startingReadingLevel</td></tr><tr><td>GoalReading Level</td><td>$goalReadingLevel</td></tr><tr><td>Current Reading Level</td><td>$currentReadingLevel</td></tr></table>";
   echo "<table>\n";
@@ -73,16 +79,12 @@
 
   <p>Add book</p> <!--add book to student read list-->
   <form action="read_book_submit.php" method="post" style = "display: inline"><!--submit form to read_book_submit.php-->
-    <input type = "hidden" name = "sid" value = "<?php echo $studentID;?>"> <!--send studentID to read_book_submit-->
+    <input type = "hidden" name = "sid" value = "<?php echo $static_studentID;?>"> <!--send studentID to read_book_submit-->
       <select name="bookselect" style = "width: 60%;">
       <?php
       //connect to database
-        $server = "localhost";
-        $db = "academicdb";
-        $user = "root";
-        $password = "";
-        $dbconn = mysqli_connect($server, $user, $password, $db)
-          or die('Could not connect: '.mysqli_connect_error());
+      require('../php/mysqli_connect.php');
+
           //query to find all books
         $sql = mysqli_query($dbconn, "SELECT books.name AS bkn, books.id AS bid FROM books");
         while ($row = $sql->fetch_assoc()){
@@ -100,12 +102,12 @@
   <form method="post" action = "assignment_submit.php"style = "display: inline"><!--form sent to assignment_submit.php-->
     <input name = "asn" type="text" placeholder = "assessment name" id="assessment_name" size = "30"></input><!--assignment name-->
     <input name = "asg" type="text" placeholder = "grade" id="assessment_grade" size = "5"></input><!--grade-->
-    <input type = "hidden" name = "sid" value = "<?php echo $studentID;?>"><!--hidden values also sent-->
+    <input type = "hidden" name = "sid" value = "<?php echo $static_studentID;?>"><!--hidden values also sent-->
     <input type="Submit"></input><!--form sent to read_books.php-->
   </form>
   <?php
   //query for populating assignmen table with entries
-    $query = "SELECT assessments.assessment_name AS an, assessments.assessment_grade AS ag FROM assessments WHERE assessments.s_id = '$studentID'";
+    $query = "SELECT assessments.assessment_name AS an, assessments.assessment_grade AS ag FROM assessments WHERE assessments.s_id = '$static_studentID'";
     $result = $dbconn->query($query) or die('Query failed: ' . mysqli_error());
     // Printing results in HTML
     echo "<table><tr><th colspan = '2'>Assignments</td></tr><tr><td>Assessment Name</th><td>Grade</td></tr>";
