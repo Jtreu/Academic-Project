@@ -26,7 +26,7 @@
       }
     }
 
-    $teacherID = isset($_POST['teacherselect']); //stores teacherID from index.php teacher select form
+    $teacherID = $_POST['teacherselect']; //stores teacherID from index.php teacher select form
 
     if($error) {
     ?>
@@ -65,7 +65,7 @@
   ?>
 <!--Dropdown menu for selecting students to edit-->
 <div id="selectstudent">
-<h3>Select Student to Add under this teacher</h3>
+<h3>Select Student</h3>
 <form action="student_details.php" method="post" style = "display: inline">
 <select name="studentselect">
 <?php
