@@ -8,6 +8,7 @@
   <a href="student_details.php">Student Details</a>
   <a href="student_submit.php">student_submit.php</a>
   <a href="teacher_submit.php">teacher_submit.php</a>
+  <a href="delete_Instructor.php">Delete Teacher</a>
 </nav>
 </div>
 <div class = "separator">
