@@ -62,13 +62,18 @@
       while ($row = $sql->fetch_assoc()){
         $teacherFirstName = $row['tfn']; //store teacher names in variables
         $teacherLastName = $row['tln'];
+        $teachersID = $row['id'];
+        $sql = mysqli_query($dbconn, "DELETE FROM teachers WHERE teachers.id = $teacherID");
+        
       }
     }
 
     //display teacher name in header
     echo "<h1>$teacherFirstName $teacherLastName</h1>";
+    
     //header home button
     echo "<button id=\"back\" onclick=\"location.href = 'index.php';\" style='display: inline'>Database Home</button>";
+    
     echo "</div>";
   ?>
 <!--Dropdown menu for selecting students to edit-->
